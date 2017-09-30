@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+sourceCompatibility = rootProject.ext.sourceCompatibility
+targetCompatibility = rootProject.ext.targetCompatibility
+
+dependencies {
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.2-3'
+}

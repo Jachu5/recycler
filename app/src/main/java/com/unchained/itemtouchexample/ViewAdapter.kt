@@ -1,4 +1,4 @@
-package acerezo.android.itemtouchexample
+package com.unchained.itemtouchexample
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

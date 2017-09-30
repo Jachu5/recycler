@@ -20,6 +20,8 @@ ext{
     targetCompatibility = JavaVersion.VERSION_1_7
 }
 
+apply from: 'dependencies.gradle'
+
 allprojects {
     repositories {
         jcenter()

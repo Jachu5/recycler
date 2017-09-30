@@ -1,4 +1,4 @@
-package acerezo.android.data
+package com.storge
 
 import com.domain.ViewModel
 

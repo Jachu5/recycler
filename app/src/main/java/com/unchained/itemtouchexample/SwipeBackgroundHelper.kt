@@ -1,11 +1,6 @@
 package com.unchained.itemtouchexample
 
-import android.graphics.Canvas
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.graphics.Rect
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
@@ -16,7 +11,7 @@ class SwipeBackgroundHelper {
 
     companion object {
 
-        private const val TRIGGER_PERCENTILE = 2.5
+        private const val TRIGGER_PERCENTAGE = 2.5
 
         @JvmStatic
         fun paintDrawCommandToStart(canvas: Canvas, viewItem: View, @DrawableRes iconResId: Int, dX: Float) {
@@ -86,7 +81,7 @@ class SwipeBackgroundHelper {
 
         @JvmStatic
         private fun willActionBeTriggered(dX: Float, viewWidth: Int): Boolean {
-            return Math.abs(dX) >= viewWidth / TRIGGER_PERCENTILE
+            return Math.abs(dX) >= viewWidth / TRIGGER_PERCENTAGE
         }
     }
 

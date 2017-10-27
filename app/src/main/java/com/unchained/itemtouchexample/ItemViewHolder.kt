@@ -8,10 +8,10 @@ import kotlinx.android.synthetic.main.item_view.view.*
 
 class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var title_view: TextView = itemView.item_view_title
+    private var titleView: TextView = itemView.item_view_title
 
     fun bind(beer: ViewModel) =
             with(itemView) {
-                title_view.text = beer.title
+                titleView.text = beer.title
             }
 }

@@ -8,6 +8,7 @@ import com.domain.ViewModel
  */
 object DataSource {
 
+    @Suppress("MagicNumber")
     fun getItems(): MutableList<ViewModel> {
         val items: MutableList<ViewModel> = mutableListOf()
 

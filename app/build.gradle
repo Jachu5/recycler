@@ -1,6 +1,12 @@
+plugins {
+    id 'io.gitlab.arturbosch.detekt' version '1.0.0.RC5-2'
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
+apply from: '../detekt.gradle'
 
 android {
 

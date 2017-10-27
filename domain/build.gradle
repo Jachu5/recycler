@@ -1,5 +1,11 @@
+plugins {
+    id 'io.gitlab.arturbosch.detekt' version '1.0.0.RC5-2'
+}
+
 apply plugin: 'java'
 apply plugin: 'kotlin'
+
+apply from: '../detekt.gradle'
 
 sourceCompatibility = rootProject.ext.sourceCompatibility
 targetCompatibility = rootProject.ext.targetCompatibility

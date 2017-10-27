@@ -8,7 +8,7 @@ ext {
     ]
 
     kotlinDependencies = [
-            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:1.1.2-3"
+            kotlin: "org.jetbrains.kotlin:kotlin-stdlib:1.1.2-4"
     ]
 
     testDependencies = [

@@ -1,5 +1,6 @@
 package com.unchained.itemtouchexample
 
+import android.graphics.Canvas
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 
@@ -11,7 +12,8 @@ class ItemTouchHelperCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHe
         return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)
     }
 
-    override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+    override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder): Boolean {
         adapter.onItemMoved(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }
@@ -24,6 +26,16 @@ class ItemTouchHelperCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHe
         return 0.4f
     }
 
+    override fun onChildDraw(canvas: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                             dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            val viewItem = viewHolder.itemView
+            SwipeBackgroundHelper.paintDrawCommandToStart(canvas, viewItem, R.drawable.notification_icon_background
+                    , dX)
+        }
+        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+    }
+
     interface ItemTouchHelperAdapter {
 
         /**
@@ -32,7 +44,7 @@ class ItemTouchHelperCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHe
         fun onItemMoved(fromPosition: Int, toPosition: Int)
 
         /**
-         * Called when one item is swipped away
+         * Called when one item is swiped away
          */
         fun onItemDismiss(position: Int)
 

@@ -28,10 +28,9 @@ class SwipeBackgroundHelper {
         }
 
         private fun getBackgroundColor(firstColor: Int, secondColor: Int, dX: Float, viewItem: View): Int {
-            if (willActionBeTriggered(dX, viewItem.width)) {
-                return ContextCompat.getColor(viewItem.context, firstColor)
-            } else {
-                return ContextCompat.getColor(viewItem.context, secondColor)
+            when (willActionBeTriggered(dX, viewItem.width)) {
+                true -> ContextCompat.getColor(viewItem.context, firstColor)
+                false -> ContextCompat.getColor(viewItem.context, secondColor)
             }
         }
 

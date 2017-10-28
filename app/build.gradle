@@ -31,17 +31,17 @@ android {
 
 dependencies {
 
-    compile project(':domain')
-    compile project(':storage')
+    implementation project(':domain')
+    implementation project(':storage')
 
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile supportDependencies.appcompat
-    compile supportDependencies.recyclerView
-    compile kotlinDependencies.kotlin
+    implementation supportDependencies.appcompat
+    implementation supportDependencies.recyclerView
+    implementation kotlinDependencies.kotlin
 
-    testCompile testDependencies.junit
+    androidTestImplementation testDependencies.junit
 
 }

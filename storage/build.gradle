@@ -6,7 +6,7 @@ targetCompatibility = rootProject.ext.targetCompatibility
 
 dependencies {
 
-    compile project(':domain')
-    compile kotlinDependencies.kotlin
+    implementation project(':domain')
+    implementation kotlinDependencies.kotlin
 
 }

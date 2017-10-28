@@ -12,6 +12,6 @@ targetCompatibility = rootProject.ext.targetCompatibility
 
 dependencies {
 
-    compile kotlinDependencies.kotlin
+    implementation kotlinDependencies.kotlin
 
 }

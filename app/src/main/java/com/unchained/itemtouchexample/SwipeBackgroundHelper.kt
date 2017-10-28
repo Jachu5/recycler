@@ -11,7 +11,7 @@ class SwipeBackgroundHelper {
 
     companion object {
 
-        private const val TRIGGER_PERCENTAGE = 2.5
+        private const val THRESHOLD = 2.5
 
         @JvmStatic
         fun paintDrawCommandToStart(canvas: Canvas, viewItem: View, @DrawableRes iconResId: Int, dX: Float) {
@@ -30,10 +30,9 @@ class SwipeBackgroundHelper {
         }
 
         private fun getBackgroundColor(firstColor: Int, secondColor: Int, dX: Float, viewItem: View): Int {
-            if (willActionBeTriggered(dX, viewItem.width)) {
-                return ContextCompat.getColor(viewItem.context, firstColor)
-            } else {
-                return ContextCompat.getColor(viewItem.context, secondColor)
+            when (willActionBeTriggered(dX, viewItem.width)) {
+                true -> return ContextCompat.getColor(viewItem.context, firstColor)
+                false -> return ContextCompat.getColor(viewItem.context, secondColor)
             }
         }
 
@@ -71,17 +70,16 @@ class SwipeBackgroundHelper {
         }
 
         private fun getBackGroundRectangle(viewItem: View, dX: Float): RectF {
-            if (dX > 0) {
-                return RectF(viewItem.left.toFloat(), viewItem.top.toFloat(), dX, viewItem.bottom.toFloat())
-            } else {
-                return RectF(viewItem.right.toFloat() + dX, viewItem.top.toFloat(), viewItem.right.toFloat(),
-                        viewItem.bottom.toFloat())
+            when (dX > 0) {
+                true -> return RectF(viewItem.left.toFloat(), viewItem.top.toFloat(), dX, viewItem.bottom.toFloat())
+                false -> return RectF(viewItem.right.toFloat() + dX, viewItem.top.toFloat(),
+                        viewItem.right.toFloat(), viewItem.bottom.toFloat())
             }
         }
 
         @JvmStatic
         private fun willActionBeTriggered(dX: Float, viewWidth: Int): Boolean {
-            return Math.abs(dX) >= viewWidth / TRIGGER_PERCENTAGE
+            return Math.abs(dX) >= viewWidth / THRESHOLD
         }
     }
 

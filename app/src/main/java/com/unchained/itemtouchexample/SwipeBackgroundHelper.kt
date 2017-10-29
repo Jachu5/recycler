@@ -21,12 +21,12 @@ class SwipeBackgroundHelper {
 
         private fun createDrawCommand(viewItem: View, dX: Float, iconResId: Int): DrawCommand {
             val context = viewItem.context
-            var startIcon = ContextCompat.getDrawable(context, iconResId)
-            startIcon = DrawableCompat.wrap(startIcon).mutate()
-            startIcon.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.white),
+            var icon = ContextCompat.getDrawable(context, iconResId)
+            icon = DrawableCompat.wrap(icon).mutate()
+            icon.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.white),
                     PorterDuff.Mode.SRC_IN)
             val backgroundColor = getBackgroundColor(R.color.red, R.color.grey, dX, viewItem)
-            return DrawCommand(startIcon, backgroundColor)
+            return DrawCommand(icon, backgroundColor)
         }
 
         private fun getBackgroundColor(firstColor: Int, secondColor: Int, dX: Float, viewItem: View): Int {
@@ -38,22 +38,22 @@ class SwipeBackgroundHelper {
 
         private fun paintDrawCommand(drawCommand: DrawCommand, canvas: Canvas, dX: Float, viewItem: View) {
             drawBackground(canvas, viewItem, dX, drawCommand.backgroundColor)
-            drawIconSwipe(drawCommand, canvas, viewItem, dX)
+            drawIcon(drawCommand, canvas, viewItem, dX)
         }
 
-        private fun drawIconSwipe(drawCommand: DrawCommand, canvas: Canvas, viewItem: View, dX: Float) {
+        private fun drawIcon(drawCommand: DrawCommand, canvas: Canvas, viewItem: View, dX: Float) {
             val topMargin = calculateTopMargin(drawCommand.icon, viewItem)
             drawCommand.icon.bounds = getStartContainerRectangle(viewItem, drawCommand.icon.intrinsicWidth,
-                    20, topMargin, dX)
+                    topMargin, 20, dX)
             drawCommand.icon.draw(canvas)
         }
 
         private fun getStartContainerRectangle(viewItem: View, iconWidth: Int, topMargin: Int, sideOffset: Int,
                                                displacement: Float): Rect {
-            val leftBound = viewItem.left - iconWidth - sideOffset + displacement.toInt()
+            val leftBound = viewItem.right + displacement.toInt() + sideOffset
+            val rightBound = viewItem.right + displacement.toInt() + iconWidth + sideOffset
             val topBound = viewItem.top + topMargin
-            val rightBound = viewItem.left - sideOffset + displacement.toInt()
-            val bottomBound = viewItem.top + iconWidth + topMargin
+            val bottomBound = viewItem.bottom - topMargin
 
             return Rect(leftBound, topBound, rightBound, bottomBound)
         }
@@ -70,11 +70,8 @@ class SwipeBackgroundHelper {
         }
 
         private fun getBackGroundRectangle(viewItem: View, dX: Float): RectF {
-            when (dX > 0) {
-                true -> return RectF(viewItem.left.toFloat(), viewItem.top.toFloat(), dX, viewItem.bottom.toFloat())
-                false -> return RectF(viewItem.right.toFloat() + dX, viewItem.top.toFloat(),
-                        viewItem.right.toFloat(), viewItem.bottom.toFloat())
-            }
+            return RectF(viewItem.right.toFloat() + dX, viewItem.top.toFloat(), viewItem.right.toFloat(),
+                    viewItem.bottom.toFloat())
         }
 
         @JvmStatic

@@ -30,7 +30,7 @@ class ItemTouchHelperCallback(val adapter: ItemTouchHelperAdapter) : ItemTouchHe
                              dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             val viewItem = viewHolder.itemView
-            SwipeBackgroundHelper.paintDrawCommandToStart(canvas, viewItem, R.drawable.notification_icon_background
+            SwipeBackgroundHelper.paintDrawCommandToStart(canvas, viewItem, R.drawable.ic_trash
                     , dX)
         }
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

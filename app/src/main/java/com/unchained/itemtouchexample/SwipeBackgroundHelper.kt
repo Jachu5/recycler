@@ -74,7 +74,6 @@ class SwipeBackgroundHelper {
                     viewItem.bottom.toFloat())
         }
 
-        @JvmStatic
         private fun willActionBeTriggered(dX: Float, viewWidth: Int): Boolean {
             return Math.abs(dX) >= viewWidth / THRESHOLD
         }

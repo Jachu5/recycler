@@ -1,0 +1,13 @@
+detekt {
+    version = "1.0.0.RC5-2"
+    profile("main") {
+        input = "$projectDir"
+        config = "$project.rootDir/detekt-ruleset.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        output = "${project.buildDir}/reports/detekt.xml"
+        parallel = true
+        disableDefaultRuleSets = false
+    }
+}
+
+tasks.getByName('check').finalizedBy detektCheck

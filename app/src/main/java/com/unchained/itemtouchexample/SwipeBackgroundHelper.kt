@@ -11,6 +11,10 @@ class SwipeBackgroundHelper {
 
     companion object {
 
+        private const val THRESHOLD = 2.5
+
+        private const val OFFSET_PX = 20
+
         @JvmStatic
         fun paintDrawCommandToStart(canvas: Canvas, viewItem: View, @DrawableRes iconResId: Int, dX: Float) {
             val drawCommand = createDrawCommand(viewItem, dX, iconResId)
@@ -19,12 +23,12 @@ class SwipeBackgroundHelper {
 
         private fun createDrawCommand(viewItem: View, dX: Float, iconResId: Int): DrawCommand {
             val context = viewItem.context
-            var startIcon = ContextCompat.getDrawable(context, iconResId)
-            startIcon = DrawableCompat.wrap(startIcon).mutate()
-            startIcon.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.white),
+            var icon = ContextCompat.getDrawable(context, iconResId)
+            icon = DrawableCompat.wrap(icon).mutate()
+            icon.colorFilter = PorterDuffColorFilter(ContextCompat.getColor(context, R.color.white),
                     PorterDuff.Mode.SRC_IN)
             val backgroundColor = getBackgroundColor(R.color.red, R.color.grey, dX, viewItem)
-            return DrawCommand(startIcon, backgroundColor)
+            return DrawCommand(icon, backgroundColor)
         }
 
         private fun getBackgroundColor(firstColor: Int, secondColor: Int, dX: Float, viewItem: View): Int {
@@ -36,22 +40,21 @@ class SwipeBackgroundHelper {
 
         private fun paintDrawCommand(drawCommand: DrawCommand, canvas: Canvas, dX: Float, viewItem: View) {
             drawBackground(canvas, viewItem, dX, drawCommand.backgroundColor)
-            drawIconSwipe(drawCommand, canvas, viewItem, dX)
+            drawIcon(canvas, viewItem, dX, drawCommand.icon)
         }
 
-        private fun drawIconSwipe(drawCommand: DrawCommand, canvas: Canvas, viewItem: View, dX: Float) {
-            val topMargin = calculateTopMargin(drawCommand.icon, viewItem)
-            drawCommand.icon.bounds = getStartContainerRectangle(viewItem, drawCommand.icon.intrinsicWidth,
-                    20, topMargin, dX)
-            drawCommand.icon.draw(canvas)
+        private fun drawIcon(canvas: Canvas, viewItem: View, dX: Float, icon: Drawable) {
+            val topMargin = calculateTopMargin(icon, viewItem)
+            icon.bounds = getStartContainerRectangle(viewItem, icon.intrinsicWidth, topMargin, OFFSET_PX, dX)
+            icon.draw(canvas)
         }
 
         private fun getStartContainerRectangle(viewItem: View, iconWidth: Int, topMargin: Int, sideOffset: Int,
-                                               displacement: Float): Rect {
-            val leftBound = viewItem.left - iconWidth - sideOffset + displacement.toInt()
+                                               dx: Float): Rect {
+            val leftBound = viewItem.right + dx.toInt() + sideOffset
+            val rightBound = viewItem.right + dx.toInt() + iconWidth + sideOffset
             val topBound = viewItem.top + topMargin
-            val rightBound = viewItem.left - sideOffset + displacement.toInt()
-            val bottomBound = viewItem.top + iconWidth + topMargin
+            val bottomBound = viewItem.bottom - topMargin
 
             return Rect(leftBound, topBound, rightBound, bottomBound)
         }
@@ -68,17 +71,12 @@ class SwipeBackgroundHelper {
         }
 
         private fun getBackGroundRectangle(viewItem: View, dX: Float): RectF {
-            if (dX > 0) {
-                return RectF(viewItem.left.toFloat(), viewItem.top.toFloat(), dX, viewItem.bottom.toFloat())
-            } else {
-                return RectF(viewItem.right.toFloat() + dX, viewItem.top.toFloat(), viewItem.right.toFloat(),
-                        viewItem.bottom.toFloat())
-            }
+            return RectF(viewItem.right.toFloat() + dX, viewItem.top.toFloat(), viewItem.right.toFloat(),
+                    viewItem.bottom.toFloat())
         }
 
-        @JvmStatic
         private fun willActionBeTriggered(dX: Float, viewWidth: Int): Boolean {
-            return Math.abs(dX) >= viewWidth / 2.5
+            return Math.abs(dX) >= viewWidth / THRESHOLD
         }
     }
 

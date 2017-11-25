@@ -13,6 +13,8 @@ class SwipeBackgroundHelper {
 
         private const val THRESHOLD = 2.5
 
+        private const val OFFSET_PX = 20
+
         @JvmStatic
         fun paintDrawCommandToStart(canvas: Canvas, viewItem: View, @DrawableRes iconResId: Int, dX: Float) {
             val drawCommand = createDrawCommand(viewItem, dX, iconResId)
@@ -38,20 +40,19 @@ class SwipeBackgroundHelper {
 
         private fun paintDrawCommand(drawCommand: DrawCommand, canvas: Canvas, dX: Float, viewItem: View) {
             drawBackground(canvas, viewItem, dX, drawCommand.backgroundColor)
-            drawIcon(drawCommand, canvas, viewItem, dX)
+            drawIcon(canvas, viewItem, dX, drawCommand.icon)
         }
 
-        private fun drawIcon(drawCommand: DrawCommand, canvas: Canvas, viewItem: View, dX: Float) {
-            val topMargin = calculateTopMargin(drawCommand.icon, viewItem)
-            drawCommand.icon.bounds = getStartContainerRectangle(viewItem, drawCommand.icon.intrinsicWidth,
-                    topMargin, 20, dX)
-            drawCommand.icon.draw(canvas)
+        private fun drawIcon(canvas: Canvas, viewItem: View, dX: Float, icon: Drawable) {
+            val topMargin = calculateTopMargin(icon, viewItem)
+            icon.bounds = getStartContainerRectangle(viewItem, icon.intrinsicWidth, topMargin, OFFSET_PX, dX)
+            icon.draw(canvas)
         }
 
         private fun getStartContainerRectangle(viewItem: View, iconWidth: Int, topMargin: Int, sideOffset: Int,
-                                               displacement: Float): Rect {
-            val leftBound = viewItem.right + displacement.toInt() + sideOffset
-            val rightBound = viewItem.right + displacement.toInt() + iconWidth + sideOffset
+                                               dx: Float): Rect {
+            val leftBound = viewItem.right + dx.toInt() + sideOffset
+            val rightBound = viewItem.right + dx.toInt() + iconWidth + sideOffset
             val topBound = viewItem.top + topMargin
             val bottomBound = viewItem.bottom - topMargin
 
